@@ -1,21 +1,24 @@
 use clap::{Args, Subcommand};
 
 #[derive(Debug, Args)]
-pub struct MinifyOptions {
-    #[arg(short, long, required=true, value_name = "path to file")]
-    file: String
+pub struct FormatOptions {
+    #[arg(long, short, value_name = "path to file", conflicts_with = "content")]
+    pub file: Option<String>,
+
+    #[arg(long, value_name = "json content", conflicts_with = "file")]
+    pub content: Option<String>
 }
 
 #[derive(Debug, Args)]
-pub struct FormatOptions {
-    #[arg(short, long, required=true, value_name = "path to file")]
-    file: String
+pub struct MinifyOptions {
+    #[arg(required=true, value_name = "path to file")]
+    pub file: String
 }
 
 #[derive(Debug, Args)]
 pub struct ValidateOptions {
-    #[arg(short, long, required=true, value_name = "path to file")]
-    file: String
+    #[arg(required=true, value_name = "path to file")]
+    pub file: String
 }
 
 #[derive(Debug, Subcommand)]

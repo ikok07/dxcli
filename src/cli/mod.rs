@@ -1,7 +1,7 @@
 mod json;
 
 use clap::{Parser, Subcommand};
-use crate::args_parser::json::JSONMethod;
+pub use crate::cli::json::{JSONMethod, FormatOptions, MinifyOptions, ValidateOptions};
 
 #[derive(Debug, Subcommand)]
 pub enum Command {
@@ -12,7 +12,7 @@ pub enum Command {
 }
 
 #[derive(Debug, Parser)]
-pub struct ArgsParser {
+pub struct Cli {
     #[command(subcommand)]
     pub command: Command
 }
