@@ -1,0 +1,69 @@
+use clap::{Args, Subcommand};
+
+#[derive(Debug, Subcommand)]
+pub enum TimeMethod {
+    Now {
+        #[command(flatten)]
+        options: TimeNowOptions
+    },
+    Unix,
+    FromUnix {
+        #[command(flatten)]
+        options: TimeFromUnixOptions
+    },
+    ToUnix {
+        #[command(flatten)]
+        options: TimeToUnixOptions
+    },
+    Relative {
+        #[command(flatten)]
+        options: TimeAgoOptions
+    },
+    Format {
+        #[command(flatten)]
+        options: TimeFormatOptions
+    },
+    Tz
+}
+
+#[derive(Debug, Args)]
+pub struct TimeNowOptions {
+    #[arg(long, short, required = false, help = "Timezone")]
+    pub timezone: Option<String>
+}
+
+#[derive(Debug, Args)]
+pub struct TimeFromUnixOptions {
+    #[arg(required = true, help = "Unix Timestamp")]
+    pub timestamp: i64,
+
+    #[arg(long, short, required = false, help = "Timezone")]
+    pub timezone: Option<String>
+}
+
+#[derive(Debug, Args)]
+pub struct TimeToUnixOptions {
+    #[arg(required = true, help = "Date string")]
+    pub date: String,
+
+    #[arg(long, short, required = true, help = "strftime/strptime date format")]
+    pub format: String
+}
+
+#[derive(Debug, Args)]
+pub struct TimeAgoOptions {
+    #[arg(required = true, help = "Unix Timestamp")]
+    pub timestamp: i64
+}
+
+#[derive(Debug, Args)]
+pub struct TimeFormatOptions {
+    #[arg(required = true, help = "Date string")]
+    pub date: String,
+
+    #[arg(long, short, required = true, help = "Original date format (strftime/strptime)")]
+    pub from: String,
+
+    #[arg(long, short, required = true, help = "Target date format (strftime/strptime)")]
+    pub target: String
+}

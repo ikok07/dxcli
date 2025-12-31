@@ -2,6 +2,7 @@ mod json;
 mod encode;
 mod decode;
 mod uuid;
+mod time;
 
 use std::error::Error;
 use std::fmt::{write, Display, Formatter};
@@ -9,6 +10,7 @@ use crate::cli::{Command};
 use crate::handlers::decode::DecodeHandler;
 use crate::handlers::encode::EncodeHandler;
 use crate::handlers::json::JSONHandler;
+use crate::handlers::time::TimeHandler;
 use crate::handlers::uuid::UuidHandler;
 
 #[derive(Debug)]
@@ -46,7 +48,8 @@ impl CommandHandler {
             Command::Json {method} => JSONHandler::handle_method(method),
             Command::Encode {method} => EncodeHandler::handle_method(method),
             Command::Decode {method} => DecodeHandler::handle_method(method),
-            Command::Uuid {method} => UuidHandler::handle_method(method)
+            Command::Uuid {method} => UuidHandler::handle_method(method),
+            Command::Time {method} => TimeHandler::handle_method(method)
         }
     }
 }
