@@ -1,6 +1,7 @@
 mod json;
 mod encode;
 mod decode;
+mod uuid;
 
 use std::error::Error;
 use std::fmt::{write, Display, Formatter};
@@ -8,6 +9,7 @@ use crate::cli::{Command};
 use crate::handlers::decode::DecodeHandler;
 use crate::handlers::encode::EncodeHandler;
 use crate::handlers::json::JSONHandler;
+use crate::handlers::uuid::UuidHandler;
 
 #[derive(Debug)]
 pub enum CommandHandlerError {
@@ -43,7 +45,8 @@ impl CommandHandler {
         return match &self.command {
             Command::Json {method} => JSONHandler::handle_method(method),
             Command::Encode {method} => EncodeHandler::handle_method(method),
-            Command::Decode {method} => DecodeHandler::handle_method(method)
+            Command::Decode {method} => DecodeHandler::handle_method(method),
+            Command::Uuid {method} => UuidHandler::handle_method(method)
         }
     }
 }

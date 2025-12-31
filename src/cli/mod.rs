@@ -1,9 +1,11 @@
 mod json;
 mod encode_decode;
+mod uuid;
 
 use clap::{Parser, Subcommand};
 pub use crate::cli::json::{JSONMethod, FormatOptions, MinifyOptions, ValidateOptions};
 pub use crate::cli::encode_decode::{EncodeMethod, DecodeMethod, Base64Options, URLOptions, HexOptions};
+pub use crate::cli::uuid::{UuidMethod, UuidOptions};
 
 #[derive(Debug, Subcommand)]
 pub enum Command {
@@ -18,6 +20,10 @@ pub enum Command {
     Decode {
         #[command(subcommand)]
         method: DecodeMethod
+    },
+    Uuid {
+        #[command(subcommand)]
+        method: UuidMethod
     }
 }
 
