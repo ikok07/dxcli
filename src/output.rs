@@ -1,5 +1,14 @@
+use std::fs;
 use std::io::stdout;
+use std::process::exit;
 use colored::Colorize;
+
+pub fn save_to_file(content: &str, path: &str) {
+    if let Err(err) = fs::write(path, content) {
+        eprintln!("{}", format!("Failed to save results to file! {err}").red().bold());
+        exit(1);
+    }
+}
 
 pub fn print_success(content: &str) {
     println!("{}", format!("\nProgram finished successfully!\n").green());
