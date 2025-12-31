@@ -222,16 +222,12 @@ strip = true
 - ✅ Format/prettify JSON
 - ✅ Minify JSON
 - ✅ Validate JSON syntax
-- ✅ Query JSON (JSONPath)
-- ✅ Sort JSON keys
 
 **Commands:**
 ```bash
 dx json format <file>
 dx json minify <file>
 dx json validate <file>
-dx json query <file> <path>
-dx json sort <file>
 ```
 
 #### 2. Encoding/Decoding

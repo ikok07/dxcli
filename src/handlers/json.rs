@@ -1,10 +1,30 @@
 use std::fs;
+use std::error::Error;
+use std::fmt::{Display, Formatter};
+use miette::{NamedSource, SourceSpan, Diagnostic};
 use crate::cli::{FormatOptions, JSONMethod, MinifyOptions, ValidateOptions};
 use crate::handlers::CommandHandlerError;
 
-pub struct JSONHandler {
-    method: JSONMethod
+#[derive(Debug, Diagnostic)]
+struct JSONParseError {
+    #[source_code]
+    src: NamedSource<String>,
+
+    #[label("error occurred here")]
+    err_span: SourceSpan,
+
+    message: String
 }
+
+impl Display for JSONParseError {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.message)
+    }
+}
+
+impl Error for JSONParseError {}
+
+pub struct JSONHandler {}
 
 impl JSONHandler {
     pub fn handle_method(method: &JSONMethod) -> Result<String, CommandHandlerError> {
@@ -15,20 +35,44 @@ impl JSONHandler {
         }
     }
 
-    fn format(options: &FormatOptions) -> Result<String, CommandHandlerError> {
+    fn extract_json(file: Option<&String>, content: Option<&String>) -> Result<serde_json::Value, CommandHandlerError> {
+        let mut src_name = String::new();
         let json_str = {
-            if options.file.is_some() {
-                fs::read_to_string(options.file.as_ref().unwrap())
+            if file.is_some() {
+                src_name.push_str(file.unwrap());
+                fs::read_to_string(file.unwrap())
                     .map_err(|err| CommandHandlerError::RuntimeError(Some(format!("Failed to read JSON file! {}", err))))?
-            } else if options.content.is_some() {
-                options.content.as_ref().unwrap().clone()
+            } else if content.is_some() {
+                src_name.push_str("Provided JSON content");
+                content.unwrap().to_string()
             } else {
                 return Err(CommandHandlerError::MissingArgumentsSome(vec!["file".to_string(), "content".to_string()]))
             }
         };
 
-        let json: serde_json::Value = serde_json::from_str(&json_str)
-            .map_err(|err| CommandHandlerError::RuntimeError(Some(format!("Failed to parse JSON! {}", err))))?;
+        return Ok(
+            serde_json::from_str(&json_str)
+                .map_err(|err| {
+                    let line = err.line();
+                    let col = err.column();
+
+                    let offset = json_str.lines().take(line).map(|l| l.len() + 1).sum::<usize>() + col - 1;
+
+                    let parse_error = JSONParseError {
+                        src: NamedSource::new(src_name, json_str),
+                        err_span: SourceSpan::new(offset.into(), 1),
+                        message: format!("Failed to parse JSON: {err}")
+                    };
+
+                    CommandHandlerError::RuntimeError(Some(
+                        format!("{:?}", miette::Report::new(parse_error))
+                    ))
+                })?
+        );
+    }
+
+    fn format(options: &FormatOptions) -> Result<String, CommandHandlerError> {
+        let json = Self::extract_json(options.file.as_ref(), options.content.as_ref())?;
 
         let pretty_json = serde_json::to_string_pretty(&json)
             .map_err(|err| CommandHandlerError::RuntimeError(Some(format!("Failed to prettify JSON! {}", err))))?;
@@ -37,10 +81,16 @@ impl JSONHandler {
     }
 
     fn minify(options: &MinifyOptions) -> Result<String, CommandHandlerError> {
-        Ok(String::from("Result from minify"))
+        let json = Self::extract_json(options.file.as_ref(), options.content.as_ref())?;
+
+        let minified_json = serde_json::to_string(&json)
+            .map_err(|err| CommandHandlerError::RuntimeError(Some(format!("Failed to minify JSON! {}", err))))?;;
+
+        return Ok(minified_json);
     }
 
     fn validate(options: &ValidateOptions) -> Result<String, CommandHandlerError> {
-        Ok(String::from("Result from validate"))
+        Self::extract_json(options.file.as_ref(), options.content.as_ref())?;
+        return Ok("The provided JSON is valid!".to_string());
     }
 }
