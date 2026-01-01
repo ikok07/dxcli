@@ -1,12 +1,12 @@
-use chrono::{DateTime, Duration, TimeZone, Utc};
+use chrono::{Duration};
 use chrono_tz::{Tz, TZ_VARIANTS};
 use crate::cli::{TimeAgoOptions, TimeFormatOptions, TimeFromUnixOptions, TimeMethod, TimeNowOptions, TimeToUnixOptions};
-use crate::handlers::CommandHandlerError;
+use crate::handlers::{Result, CommandHandlerError};
 
 pub struct TimeHandler {}
 
 impl TimeHandler {
-    pub fn handle_method(method: &TimeMethod) -> Result<String, CommandHandlerError> {
+    pub fn handle_method(method: &TimeMethod) -> Result {
         match method {
             TimeMethod::Now {options} => Self::get_current_datetime(options),
             TimeMethod::Unix => Ok(chrono::Utc::now().timestamp().to_string()),
@@ -18,11 +18,11 @@ impl TimeHandler {
         }
     }
 
-    fn get_current_datetime(options: &TimeNowOptions) -> Result<String, CommandHandlerError> {
+    fn get_current_datetime(options: &TimeNowOptions) -> Result {
         let format = "%d/%m/%Y %H:%M:%S %Z";
         if options.timezone.is_some() {
             let timezone = options.timezone.as_ref().unwrap();
-            let tz: Tz = timezone.parse().map_err(|err| {
+            let tz: Tz = timezone.parse().map_err(|_| {
                 return CommandHandlerError::RuntimeError(Some(Self::invalid_tz_message(timezone)))
             })?;
             return Ok(chrono::Utc::now().with_timezone(&tz).format(format).to_string());
@@ -31,12 +31,12 @@ impl TimeHandler {
         return Ok(chrono::Local::now().format(format).to_string())
     }
 
-    fn convert_from_unix(options: &TimeFromUnixOptions) -> Result<String, CommandHandlerError> {
+    fn convert_from_unix(options: &TimeFromUnixOptions) -> Result {
         match chrono::DateTime::from_timestamp(options.timestamp, 0) {
             Some(date) => {
                 if options.timezone.is_some() {
                     let timezone = options.timezone.as_ref().unwrap();
-                    let tz: Tz = timezone.parse().map_err(|err| {
+                    let tz: Tz = timezone.parse().map_err(|_| {
                         return CommandHandlerError::RuntimeError(Some(Self::invalid_tz_message(timezone)))
                     })?;
                     return Ok(date.with_timezone(&tz).to_rfc3339());
@@ -48,8 +48,8 @@ impl TimeHandler {
         }
     }
 
-    fn convert_to_unix(options: &TimeToUnixOptions) -> Result<String, CommandHandlerError> {
-        let err_convert = |err| CommandHandlerError::RuntimeError(Some(format!("Failed to parse date '{}'!", options.date)));
+    fn convert_to_unix(options: &TimeToUnixOptions) -> Result {
+        let err_convert = |_| CommandHandlerError::RuntimeError(Some(format!("Failed to parse date '{}'!", options.date)));
 
         // Check if timezone is included
         if Self::has_format_timezone(&options.format) {
@@ -65,7 +65,7 @@ impl TimeHandler {
         }
     }
 
-    fn calculate_relative_time(options: &TimeAgoOptions) -> Result<String, CommandHandlerError> {
+    fn calculate_relative_time(options: &TimeAgoOptions) -> Result {
         match chrono::DateTime::from_timestamp(options.timestamp, 0) {
             Some(date) => {
                 let duration = chrono::Utc::now() - date;
@@ -104,9 +104,9 @@ impl TimeHandler {
             None => Err(CommandHandlerError::RuntimeError(Some(format!("Timestamp '{}' is invalid!", options.timestamp))))
         }
     }
-    
-    fn format_date(options: &TimeFormatOptions) -> Result<String, CommandHandlerError> {
-        let err_convert = |err| CommandHandlerError::RuntimeError(Some(format!("Failed to parse date '{}'!", options.date)));
+
+    fn format_date(options: &TimeFormatOptions) -> Result {
+        let err_convert = |_| CommandHandlerError::RuntimeError(Some(format!("Failed to parse date '{}'!", options.date)));
         if Self::has_format_timezone(&options.from) {
             let date = chrono::DateTime::parse_from_str(&options.date, &options.from)
                 .map_err(err_convert)?;
@@ -123,7 +123,7 @@ impl TimeHandler {
     fn invalid_tz_message(timezone: &str) -> String {
         format!("Timezone '{}' is invalid! Run 'dx time tz' to list all available timezones", timezone)
     }
-    
+
     fn has_format_timezone(format: &str) -> bool {
         return ["%Z", "%z"].iter().any(|pattern| format.contains(pattern));
     }

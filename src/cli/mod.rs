@@ -9,10 +9,10 @@ mod jwt;
 use clap::{Parser, Subcommand};
 pub use crate::cli::json::{JSONMethod, FormatOptions, MinifyOptions, ValidateOptions};
 pub use crate::cli::encode_decode::{EncodeMethod, DecodeMethod, Base64Options, URLOptions, HexOptions};
-pub use crate::cli::hash::{HashMethod, HashTextOptions, HashFileOptions, HashVerifyOptions, HashAlgorithm};
+pub use crate::cli::hash::{HashMethod, HashFileOptions, HashVerifyOptions, HashAlgorithm};
 pub use crate::cli::uuid::{UuidMethod, UuidOptions};
 pub use crate::cli::time::{TimeMethod, TimeNowOptions, TimeFromUnixOptions, TimeToUnixOptions, TimeAgoOptions, TimeFormatOptions};
-pub use crate::cli::text::{TextMethod, TextOptions};
+pub use crate::cli::text::{TextMethod};
 pub use crate::cli::jwt::{JWTMethod, JWTDecodeOptions, JWTVerifyOptions};
 
 #[derive(Debug, Subcommand)]

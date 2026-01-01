@@ -2,13 +2,12 @@ use std::fs;
 use md5::{Md5, Digest as Md5Digest};
 use sha2::{Sha256, Sha512, Digest as Sha256Digest};
 use crate::cli::{HashAlgorithm, HashFileOptions, HashMethod, HashVerifyOptions};
-use crate::handlers::CommandHandlerError;
-use crate::handlers::CommandHandlerError::RuntimeError;
+use crate::handlers::{Result, CommandHandlerError};
 
 pub struct HashHandler {}
 
 impl HashHandler {
-    pub fn handle_method(method: &HashMethod) -> Result<String, CommandHandlerError> {
+    pub fn handle_method(method: &HashMethod) -> Result {
         match method {
             HashMethod::Md5 {options} => Ok(Self::hash_md5(&options.text)),
             HashMethod::Sha256 {options} => Ok(Self::hash_sha256(&options.text)),
@@ -22,9 +21,9 @@ impl HashHandler {
     fn hash_sha256(text: &str) -> String { hex::encode(Sha256::digest(text.as_bytes())) }
     fn hash_sha512(text: &str) -> String { hex::encode(Sha512::digest(text.as_bytes())) }
 
-    fn hash_file(options: &HashFileOptions) -> Result<String, CommandHandlerError> {
+    fn hash_file(options: &HashFileOptions) -> Result {
         let file_content = fs::read_to_string(&options.path)
-            .map_err(|err| RuntimeError(Some(format!("Failed to read file contents! {err}"))))?;
+            .map_err(|err| CommandHandlerError::RuntimeError(Some(format!("Failed to read file contents! {err}"))))?;
 
         return Ok(
             match options.algorithm {
@@ -35,7 +34,7 @@ impl HashHandler {
         );
     }
 
-    fn verify_hash(options: &HashVerifyOptions) -> Result<String, CommandHandlerError> {
+    fn verify_hash(options: &HashVerifyOptions) -> Result {
         let new_hash = {
             match options.algorithm {
                 HashAlgorithm::Md5 => Self::hash_md5(&options.text),

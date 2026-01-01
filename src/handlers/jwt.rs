@@ -1,22 +1,20 @@
 use std::collections::HashSet;
-use clap::builder::Str;
 use jsonwebtoken::{Algorithm, DecodingKey, Validation};
 use serde_json::Value;
 use crate::cli::{JWTDecodeOptions, JWTMethod, JWTVerifyOptions};
-use crate::handlers::CommandHandlerError;
-use crate::handlers::CommandHandlerError::RuntimeError;
+use crate::handlers::{Result, CommandHandlerError};
 
 pub struct JWTHandler {}
 
 impl JWTHandler {
-    pub fn handle_method(method: &JWTMethod) -> Result<String, CommandHandlerError> {
+    pub fn handle_method(method: &JWTMethod) -> Result {
         match method {
             JWTMethod::Decode {options} => Self::decode_jwt(options),
             JWTMethod::Verify {options} => Self::verify_jwt(options)
         }
     }
 
-    fn decode_jwt(options: &JWTDecodeOptions) -> Result<String, CommandHandlerError> {
+    fn decode_jwt(options: &JWTDecodeOptions) -> Result {
         match jsonwebtoken::dangerous::insecure_decode::<Value>(&options.token) {
             Ok(data) => {
                 let json_header = serde_json::to_string_pretty(&data.header)
@@ -31,7 +29,7 @@ impl JWTHandler {
         }
     }
 
-    fn verify_jwt(options: &JWTVerifyOptions) -> Result<String, CommandHandlerError> {
+    fn verify_jwt(options: &JWTVerifyOptions) -> Result {
         let key = DecodingKey::from_secret(options.secret.as_bytes());
         let mut validation = Validation::new(Algorithm::from(&options.algorithm));
         validation.required_spec_claims = HashSet::new();
@@ -42,7 +40,7 @@ impl JWTHandler {
 
         match jsonwebtoken::decode::<Value>(&options.token, &key, &validation) {
             Ok(_) => Ok(String::from("The provided JWT Token is valid!")),
-            Err(err) => Err(RuntimeError(Some(format!("The JWT Token is invalid! {err}"))))
+            Err(err) => Err(CommandHandlerError::RuntimeError(Some(format!("The JWT Token is invalid! {err}"))))
         }
     }
 }

@@ -8,7 +8,9 @@ mod hash;
 mod jwt;
 
 use std::error::Error;
-use std::fmt::{write, Display, Formatter};
+use std::fmt::{Display, Formatter};
+use std::result;
+
 use crate::cli::{Command};
 use crate::handlers::decode::DecodeHandler;
 use crate::handlers::encode::EncodeHandler;
@@ -26,6 +28,8 @@ pub enum CommandHandlerError {
     MissingArgumentsSome(Vec<String>),
     UnknownError
 }
+
+pub type Result = result::Result<String, CommandHandlerError>;
 
 impl Display for CommandHandlerError {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
@@ -49,7 +53,7 @@ impl CommandHandler {
         CommandHandler {command}
     }
 
-    pub fn handle(&self) -> Result<String, CommandHandlerError> {
+    pub fn handle(&self) -> Result {
         return match &self.command {
             Command::Json {method} => JSONHandler::handle_method(method),
             Command::Encode {method} => EncodeHandler::handle_method(method),

@@ -1,5 +1,4 @@
 use std::fs;
-use std::io::stdout;
 use std::process::exit;
 use colored::Colorize;
 

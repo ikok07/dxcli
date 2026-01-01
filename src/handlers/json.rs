@@ -1,9 +1,9 @@
-use std::fs;
+use std::{fs, result};
 use std::error::Error;
 use std::fmt::{Display, Formatter};
 use miette::{NamedSource, SourceSpan, Diagnostic};
 use crate::cli::{FormatOptions, JSONMethod, MinifyOptions, ValidateOptions};
-use crate::handlers::CommandHandlerError;
+use crate::handlers::{Result, CommandHandlerError};
 
 #[derive(Debug, Diagnostic)]
 struct JSONParseError {
@@ -27,7 +27,7 @@ impl Error for JSONParseError {}
 pub struct JSONHandler {}
 
 impl JSONHandler {
-    pub fn handle_method(method: &JSONMethod) -> Result<String, CommandHandlerError> {
+    pub fn handle_method(method: &JSONMethod) -> Result {
         match method {
             JSONMethod::Format {options} => Self::format(options),
             JSONMethod::Minify {options} => Self::minify(options),
@@ -35,7 +35,7 @@ impl JSONHandler {
         }
     }
 
-    fn extract_json(file: Option<&String>, content: Option<&String>) -> Result<serde_json::Value, CommandHandlerError> {
+    fn extract_json(file: Option<&String>, content: Option<&String>) -> result::Result<serde_json::Value, CommandHandlerError> {
         let mut src_name = String::new();
         let json_str = {
             if file.is_some() {
@@ -71,7 +71,7 @@ impl JSONHandler {
         );
     }
 
-    fn format(options: &FormatOptions) -> Result<String, CommandHandlerError> {
+    fn format(options: &FormatOptions) -> Result {
         let json = Self::extract_json(options.file.as_ref(), options.content.as_ref())?;
 
         let pretty_json = serde_json::to_string_pretty(&json)
@@ -80,16 +80,16 @@ impl JSONHandler {
         return Ok(pretty_json);
     }
 
-    fn minify(options: &MinifyOptions) -> Result<String, CommandHandlerError> {
+    fn minify(options: &MinifyOptions) -> Result {
         let json = Self::extract_json(options.file.as_ref(), options.content.as_ref())?;
 
         let minified_json = serde_json::to_string(&json)
-            .map_err(|err| CommandHandlerError::RuntimeError(Some(format!("Failed to minify JSON! {}", err))))?;;
+            .map_err(|err| CommandHandlerError::RuntimeError(Some(format!("Failed to minify JSON! {}", err))))?;
 
         return Ok(minified_json);
     }
 
-    fn validate(options: &ValidateOptions) -> Result<String, CommandHandlerError> {
+    fn validate(options: &ValidateOptions) -> Result {
         Self::extract_json(options.file.as_ref(), options.content.as_ref())?;
         return Ok("The provided JSON is valid!".to_string());
     }

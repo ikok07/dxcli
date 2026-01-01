@@ -4,7 +4,6 @@ use crate::cli::Cli;
 use crate::handlers::CommandHandler;
 
 mod cli;
-mod utils;
 mod handlers;
 mod output;
 

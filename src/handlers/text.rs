@@ -1,12 +1,12 @@
 use capitalize::Capitalize;
 use stringcase::{camel_case, kebab_case, pascal_case, snake_case};
-use crate::handlers::CommandHandlerError;
+use crate::handlers::{Result};
 use crate::cli::{TextMethod};
 
 pub struct TextHandler {}
 
 impl TextHandler {
-    pub fn handle_method(method: &TextMethod) -> Result<String, CommandHandlerError> {
+    pub fn handle_method(method: &TextMethod) -> Result {
         match method {
             TextMethod::Upper {options} => Ok(options.text.to_uppercase()),
             TextMethod::Lower {options} => Ok(options.text.to_lowercase()),
