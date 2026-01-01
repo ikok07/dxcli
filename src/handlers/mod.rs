@@ -7,6 +7,7 @@ mod text;
 mod hash;
 mod jwt;
 mod regex;
+mod lorem;
 
 use std::error::Error;
 use std::fmt::{Display, Formatter};
@@ -18,6 +19,7 @@ use crate::handlers::encode::EncodeHandler;
 use crate::handlers::hash::HashHandler;
 use crate::handlers::json::JSONHandler;
 use crate::handlers::jwt::JWTHandler;
+use crate::handlers::lorem::LoremHandler;
 use crate::handlers::regex::RegexHandler;
 use crate::handlers::text::TextHandler;
 use crate::handlers::time::TimeHandler;
@@ -67,7 +69,8 @@ impl CommandHandler {
             Command::Time {method} => TimeHandler::handle_method(method),
             Command::Text {method} => TextHandler::handle_method(method),
             Command::Jwt {method} => JWTHandler::handle_method(method),
-            Command::Regex {method} => RegexHandler::handle_method(method)
+            Command::Regex {method} => RegexHandler::handle_method(method),
+            Command::Lorem {method} => LoremHandler::handle_method(method)
         }
     }
 }

@@ -6,6 +6,7 @@ mod text;
 mod hash;
 mod jwt;
 mod regex;
+mod lorem;
 
 use clap::{Parser, Subcommand};
 pub use crate::cli::json::{JSONMethod, FormatOptions, MinifyOptions, ValidateOptions};
@@ -16,6 +17,7 @@ pub use crate::cli::time::{TimeMethod, TimeNowOptions, TimeFromUnixOptions, Time
 pub use crate::cli::text::{TextMethod};
 pub use crate::cli::jwt::{JWTMethod, JWTDecodeOptions, JWTVerifyOptions};
 pub use crate::cli::regex::{RegexMethod, RegexTestOptions, RegexMatchOptions, RegexReplaceOptions};
+pub use crate::cli::lorem::{LoremMethod, LoremOptions};
 
 #[derive(Debug, Subcommand)]
 pub enum Command {
@@ -63,6 +65,11 @@ pub enum Command {
     Regex {
         #[command(subcommand)]
         method: RegexMethod
+    },
+    #[command(about = "Generate Lorem Ipsum texts")]
+    Lorem {
+        #[command(subcommand)]
+        method: LoremMethod
     }
 }
 
