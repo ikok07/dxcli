@@ -4,6 +4,7 @@ mod uuid;
 mod time;
 mod text;
 mod hash;
+mod jwt;
 
 use clap::{Parser, Subcommand};
 pub use crate::cli::json::{JSONMethod, FormatOptions, MinifyOptions, ValidateOptions};
@@ -12,6 +13,7 @@ pub use crate::cli::hash::{HashMethod, HashTextOptions, HashFileOptions, HashVer
 pub use crate::cli::uuid::{UuidMethod, UuidOptions};
 pub use crate::cli::time::{TimeMethod, TimeNowOptions, TimeFromUnixOptions, TimeToUnixOptions, TimeAgoOptions, TimeFormatOptions};
 pub use crate::cli::text::{TextMethod, TextOptions};
+pub use crate::cli::jwt::{JWTMethod, JWTDecodeOptions, JWTVerifyOptions};
 
 #[derive(Debug, Subcommand)]
 pub enum Command {
@@ -49,6 +51,11 @@ pub enum Command {
     Text {
         #[command(subcommand)]
         method: TextMethod
+    },
+    #[command(about = "Decode and verify jwt tokens")]
+    Jwt {
+        #[command(subcommand)]
+        method: JWTMethod
     }
 }
 

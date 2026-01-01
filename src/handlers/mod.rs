@@ -5,6 +5,7 @@ mod uuid;
 mod time;
 mod text;
 mod hash;
+mod jwt;
 
 use std::error::Error;
 use std::fmt::{write, Display, Formatter};
@@ -13,6 +14,7 @@ use crate::handlers::decode::DecodeHandler;
 use crate::handlers::encode::EncodeHandler;
 use crate::handlers::hash::HashHandler;
 use crate::handlers::json::JSONHandler;
+use crate::handlers::jwt::JWTHandler;
 use crate::handlers::text::TextHandler;
 use crate::handlers::time::TimeHandler;
 use crate::handlers::uuid::UuidHandler;
@@ -56,6 +58,7 @@ impl CommandHandler {
             Command::Uuid {method} => UuidHandler::handle_method(method),
             Command::Time {method} => TimeHandler::handle_method(method),
             Command::Text {method} => TextHandler::handle_method(method),
+            Command::Jwt {method} => JWTHandler::handle_method(method)
         }
     }
 }
