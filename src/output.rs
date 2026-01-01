@@ -22,3 +22,10 @@ pub fn print_error(error: &str) {
     println!("{error}");
     println!("{}", format!("\n------ ERROR END ------").red().bold());
 }
+
+pub fn print_negative_result(content: &str) {
+    println!("{}", format!("\nProgram finished successfully!\n").green());
+    println!("{}", format!("------ RESULT START ------\n").green().bold());
+    println!("{}", format!("{content}").red());
+    println!("{}", format!("\n------ RESULT END ------").green().bold());
+}

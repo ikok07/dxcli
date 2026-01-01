@@ -40,7 +40,7 @@ impl JWTHandler {
 
         match jsonwebtoken::decode::<Value>(&options.token, &key, &validation) {
             Ok(_) => Ok(String::from("The provided JWT Token is valid!")),
-            Err(err) => Err(CommandHandlerError::RuntimeError(Some(format!("The JWT Token is invalid! {err}"))))
+            Err(err) => Err(CommandHandlerError::NegativeResult(format!("The JWT Token is invalid! {err}")))
         }
     }
 }

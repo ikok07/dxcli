@@ -1,7 +1,7 @@
 use clap::Parser;
 use colored::Colorize;
 use crate::cli::Cli;
-use crate::handlers::CommandHandler;
+use crate::handlers::{CommandHandler, CommandHandlerError};
 
 mod cli;
 mod handlers;
@@ -19,6 +19,12 @@ fn main() {
                 output::print_success(&result);
             }
         },
-        Err(err) => output::print_error(&err.to_string())
+        Err(err) => {
+            if let CommandHandlerError::NegativeResult(message) = err {
+                output::print_negative_result(&message)
+            } else {
+                output::print_error(&err.to_string())
+            }
+        }
     };
 }

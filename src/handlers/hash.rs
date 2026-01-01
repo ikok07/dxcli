@@ -47,6 +47,6 @@ impl HashHandler {
             return Ok(String::from("The provided text matches the expected hash!"))
         }
 
-        return Err(CommandHandlerError::RuntimeError(Some("The provided string doesn't match the expected one!".to_string())));
+        return Err(CommandHandlerError::NegativeResult("The provided string doesn't match the expected one!".to_string()));
     }
 }

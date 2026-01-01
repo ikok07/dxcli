@@ -5,6 +5,7 @@ mod time;
 mod text;
 mod hash;
 mod jwt;
+mod regex;
 
 use clap::{Parser, Subcommand};
 pub use crate::cli::json::{JSONMethod, FormatOptions, MinifyOptions, ValidateOptions};
@@ -14,6 +15,7 @@ pub use crate::cli::uuid::{UuidMethod, UuidOptions};
 pub use crate::cli::time::{TimeMethod, TimeNowOptions, TimeFromUnixOptions, TimeToUnixOptions, TimeAgoOptions, TimeFormatOptions};
 pub use crate::cli::text::{TextMethod};
 pub use crate::cli::jwt::{JWTMethod, JWTDecodeOptions, JWTVerifyOptions};
+pub use crate::cli::regex::{RegexMethod, RegexTestOptions, RegexMatchOptions, RegexReplaceOptions};
 
 #[derive(Debug, Subcommand)]
 pub enum Command {
@@ -56,6 +58,11 @@ pub enum Command {
     Jwt {
         #[command(subcommand)]
         method: JWTMethod
+    },
+    #[command(about = "Common RegEx operations")]
+    Regex {
+        #[command(subcommand)]
+        method: RegexMethod
     }
 }
 
