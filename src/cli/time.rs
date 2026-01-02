@@ -2,27 +2,34 @@ use clap::{Args, Subcommand};
 
 #[derive(Debug, Subcommand)]
 pub enum TimeMethod {
+    #[command(about = "Get current date and time")]
     Now {
         #[command(flatten)]
         options: TimeNowOptions
     },
+    #[command(about = "Get Unix timestamp")]
     Unix,
+    #[command(about = "Convert from Unix timestamp")]
     FromUnix {
         #[command(flatten)]
         options: TimeFromUnixOptions
     },
+    #[command(about = "Convert to Unix timestamp")]
     ToUnix {
         #[command(flatten)]
         options: TimeToUnixOptions
     },
+    #[command(about = "Calculate relative time")]
     Relative {
         #[command(flatten)]
         options: TimeAgoOptions
     },
+    #[command(about = "Reformat date")]
     Format {
         #[command(flatten)]
         options: TimeFormatOptions
     },
+    #[command(about = "List all available timezones")]
     Tz
 }
 

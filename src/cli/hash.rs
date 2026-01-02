@@ -2,22 +2,27 @@ use clap::{Args, Subcommand, ValueEnum};
 
 #[derive(Debug, Subcommand)]
 pub enum HashMethod {
+    #[command(about = "Generate MD5 hash")]
     Md5 {
         #[command(flatten)]
         options: HashTextOptions
     },
+    #[command(about = "Generate SHA256 hash")]
     Sha256 {
         #[command(flatten)]
         options: HashTextOptions
     },
+    #[command(about = "Generate SHA512 hash")]
     Sha512 {
         #[command(flatten)]
         options: HashTextOptions
     },
+    #[command(about = "Hash file contents")]
     File {
         #[command(flatten)]
         options: HashFileOptions
     },
+    #[command(about = "Verify hash against input")]
     Verify {
         #[command(flatten)]
         options: HashVerifyOptions

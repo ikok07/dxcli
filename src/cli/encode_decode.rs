@@ -2,14 +2,17 @@ use clap::{Args, Subcommand};
 
 #[derive(Debug, Subcommand)]
 pub enum EncodeMethod {
+    #[command(about = "Encode to Base64")]
     Base64 {
         #[command(flatten)]
         options: Base64Options
     },
+    #[command(about = "URL encode")]
     URL {
         #[command(flatten)]
         options: URLOptions
     },
+    #[command(about = "Encode to hexadecimal")]
     Hex {
         #[command(flatten)]
         options: HexOptions
@@ -18,14 +21,17 @@ pub enum EncodeMethod {
 
 #[derive(Debug, Subcommand)]
 pub enum DecodeMethod {
+    #[command(about = "Decode from Base64")]
     Base64 {
         #[command(flatten)]
         options: crate::cli::Base64Options
     },
+    #[command(about = "URL decode")]
     URL {
         #[command(flatten)]
         options: crate::cli::URLOptions
     },
+    #[command(about = "Decode from hexadecimal")]
     Hex {
         #[command(flatten)]
         options: crate::cli::HexOptions

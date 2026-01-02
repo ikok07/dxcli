@@ -2,14 +2,17 @@ use clap::{Args, Subcommand};
 
 #[derive(Debug, Subcommand)]
 pub enum RegexMethod {
+    #[command(about = "Text regex pattern")]
     Test {
         #[command(flatten)]
         options: RegexTestOptions
     },
+    #[command(about = "Match regex pattern")]
     Match {
         #[command(flatten)]
         options: RegexMatchOptions
     },
+    #[command(about = "Replace using regex")]
     Replace {
         #[command(flatten)]
         options: RegexReplaceOptions

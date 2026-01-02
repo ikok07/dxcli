@@ -1,6 +1,8 @@
 [package]
 name = "dx"
-version = "0.1.0"
+version = "0.1.1"
+description = "A fast, efficient command-line tool built with Rust to streamline common developer tasks."
+authors = ["Kaloyan Stefanov"]
 edition = "2024"
 
 [dependencies]

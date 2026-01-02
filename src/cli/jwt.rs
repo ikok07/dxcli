@@ -3,10 +3,12 @@ use jsonwebtoken::Algorithm;
 
 #[derive(Debug, Subcommand)]
 pub enum JWTMethod {
+    #[command(about = "Decode JWT token")]
     Decode {
         #[command(flatten)]
         options: JWTDecodeOptions
     },
+    #[command(about = "Verify JWT token")]
     Verify {
         #[command(flatten)]
         options: JWTVerifyOptions

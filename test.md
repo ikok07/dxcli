@@ -1,6 +1,6 @@
 # DX - Developer Experience Toolkit
 
-A fast, efficient command-line tool built with Rust to streamline common developer tasks.
+A fast, efficient command-line tool built with Rust to streamline common developer tasks. DX provides utilities for working with JSON, generating UUIDs, hashing, and more—all in one convenient CLI.
 
 ## Features
 
@@ -13,7 +13,7 @@ A fast, efficient command-line tool built with Rust to streamline common develop
 
 ### Pre-built Binaries
 
-Download the latest release for your platform from the [releases page](https://github.com/ikok07/dxcli/releases).
+Download the latest release for your platform from the [releases page](https://github.com/YOUR_USERNAME/dx/releases).
 
 ### Install via Cargo
 
@@ -26,8 +26,8 @@ cargo install dx-cli
 ### Build from Source
 
 ```bash
-git clone https://github.com/ikok07/dxcli.git
-cd dxcli
+git clone https://github.com/YOUR_USERNAME/dx.git
+cd dx
 cargo build --release
 ```
 
@@ -35,44 +35,19 @@ The compiled binary will be available at `target/release/dx`.
 
 ### Add to PATH
 
-**Important**: Before adding to PATH, move the `dx` executable to a permanent location on your disk (e.g., `~/bin/dx` on Linux/macOS or `C:\Tools\dx` on Windows). Don't add the PATH from temporary locations like your Downloads folder.
-
-#### Windows
-1. Type ```Edit the system environment variables``` in the start menu and open it
-2. Click on the ```Advanced``` tab 
-3. Click ```Environment Variables```
-4. Under "User variables", select "Path" and click "Edit"
-5. Click "New" and add the path to the directory containing `dx.exe`
-6. Click "OK" on all dialogs
-
-#### Linux / MacOS
-1. Identify shell
-```shell
-echo $SHELL
-```
-2. Navigate to shell config file
-- For Zsh: ```nano ~/.zshrc```
-- For Bash (Linux): ```nano ~/.bashrc```
-- For Bash (MacOS): ```nano ~/.bash_profile```
-3. Add this line to the end of the file
-```shell
-export PATH="/path/to/dx:$PATH"
-```
-Replace `/path/to/dx` with the actual directory containing the `dx` binary.
-4. **Apply the changes**
-```bash
-source ~/.zshrc    # or ~/.bashrc / ~/.bash_profile
-```
-Or simply restart your terminal.
-5. **Verify installation**
-```bash
-dx --help
-```
+[Add instructions here for adding the binary to system PATH for each OS]
 
 ## Usage
 
 ```bash
 dx [OPTIONS] <COMMAND>
+```
+
+### Global Options
+
+```bash
+-o, --output <OUTPUT>  Path to file where to save the results
+-h, --help             Print help
 ```
 
 ### Available Commands
@@ -138,8 +113,8 @@ dx time unix        # Get Unix timestamp
 dx time from-unix   # Convert from Unix timestamp
 dx time to-unix     # Convert to Unix timestamp
 dx time relative    # Calculate relative time
-dx time format      # Reformat timestamp
-dx time tz          # List all available timezones
+dx time format      # Format timestamp
+dx time tz          # Timezone operations
 ```
 
 #### Text
@@ -147,14 +122,7 @@ dx time tz          # List all available timezones
 Text manipulation utilities.
 
 ```bash
-dx text upper    # Convert to uppercase
-dx text lower    # Convert to lowercase
-dx text title    # Capitalize text
-dx text camel    # Convert to camelCase
-dx text pascal    # Convert to PascalCase
-dx text snake    # Convert to snake_case
-dx text kebab    # Convert to kebab-case
-
+dx text [subcommand]    # Various text operations
 ```
 
 #### JWT
@@ -186,6 +154,29 @@ dx lorem sentences      # Generate random sentences
 dx lorem paragraphs     # Generate random paragraphs
 ```
 
+## Examples
+
+[Add practical examples of common use cases]
+
+```bash
+# Example 1: [Description]
+dx [command] [args]
+
+# Example 2: [Description]
+dx [command] [args]
+
+# Example 3: [Description]
+dx [command] [args]
+```
+
+## Configuration
+
+[Add information about any configuration files or environment variables]
+
+DX can be configured via:
+- Configuration file: `~/.config/dx/config.toml` (or platform-specific location)
+- Environment variables: `DX_[OPTION_NAME]`
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
@@ -212,11 +203,17 @@ cargo run -- [COMMAND] [OPTIONS]
 
 ## License
 
-This project is licensed under the MIT License
+[Add your license here - e.g., MIT, Apache 2.0, GPL-3.0]
+
+## Acknowledgments
+
+[Add any acknowledgments, inspirations, or credits]
 
 ## Support
 
-- Report bugs: [GitHub Issues](https://github.com/ikok07/dxcli/issues)
+- Report bugs: [GitHub Issues](https://github.com/YOUR_USERNAME/dx/issues)
+- Documentation: [Add link to docs if applicable]
+- Discussions: [Add link to discussions/community if applicable]
 
 ---
 

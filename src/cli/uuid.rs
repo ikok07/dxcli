@@ -2,10 +2,12 @@ use clap::{Args, Subcommand};
 
 #[derive(Debug, Subcommand)]
 pub enum UuidMethod {
+    #[command(about = "Generate UUID v4 (random)")]
     V4 {
         #[command(flatten)]
         options: UuidOptions
     },
+    #[command(about = "Generate UUID v7 (time-based)")]
     V7 {
         #[command(flatten)]
         options: UuidOptions
