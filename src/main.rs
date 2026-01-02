@@ -1,4 +1,3 @@
-use std::result;
 use clap::Parser;
 use colored::Colorize;
 use crate::cli::Cli;

@@ -18,7 +18,7 @@ impl RegexHandler {
     fn parse_regex(pattern: &str) -> result::Result<Regex, CommandHandlerError> {
         match Regex::new(pattern) {
             Ok(re) => Ok(re),
-            Err(err) => Err(CommandHandlerError::RuntimeError(Some(String::from("Invalid RegEx expression!"))))
+            Err(_) => Err(CommandHandlerError::RuntimeError(Some(String::from("Invalid RegEx expression!"))))
         }
     }
 
