@@ -15,7 +15,13 @@ A fast, efficient command-line tool built with Rust to streamline common develop
 
 Download the latest release for your platform from the [releases page](https://github.com/ikok07/dxcli/releases).
 
+### Install with prebuilt script (Linux and MacOS only)
 
+You can automatically install the tool using ```install.sh```
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/ikok07/dxcli/master/install.sh | bash
+```
 
 ### Build from Source
 
