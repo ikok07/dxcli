@@ -15,13 +15,7 @@ A fast, efficient command-line tool built with Rust to streamline common develop
 
 Download the latest release for your platform from the [releases page](https://github.com/ikok07/dxcli/releases).
 
-### Install via Cargo
 
-If you have Rust installed, you can install DX directly from crates.io:
-
-```bash
-cargo install dx-cli
-```
 
 ### Build from Source
 
