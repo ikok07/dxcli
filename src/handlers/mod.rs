@@ -24,6 +24,7 @@ use crate::handlers::regex::RegexHandler;
 use crate::handlers::text::TextHandler;
 use crate::handlers::time::TimeHandler;
 use crate::handlers::uuid::UuidHandler;
+use crate::utils::TestError;
 
 #[derive(Debug)]
 pub enum CommandHandlerError {
@@ -33,8 +34,6 @@ pub enum CommandHandlerError {
     MissingArgumentsSome(Vec<String>),
     UnknownError
 }
-
-pub type Result = result::Result<String, CommandHandlerError>;
 
 impl Display for CommandHandlerError {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
@@ -49,6 +48,14 @@ impl Display for CommandHandlerError {
 }
 
 impl Error for CommandHandlerError {}
+
+impl Into<TestError> for CommandHandlerError {
+    fn into(self) -> TestError {
+        return format!("{self}")
+    }
+}
+
+pub type Result = result::Result<String, CommandHandlerError>;
 
 pub struct CommandHandler {
     command: Command

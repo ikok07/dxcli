@@ -15,7 +15,7 @@ pub use crate::cli::hash::{HashMethod, HashFileOptions, HashVerifyOptions, HashA
 pub use crate::cli::uuid::{UuidMethod, UuidOptions};
 pub use crate::cli::time::{TimeMethod, TimeNowOptions, TimeFromUnixOptions, TimeToUnixOptions, TimeAgoOptions, TimeFormatOptions};
 pub use crate::cli::text::{TextMethod};
-pub use crate::cli::jwt::{JWTMethod, JWTDecodeOptions, JWTVerifyOptions};
+pub use crate::cli::jwt::{JWTMethod, JWTDecodeOptions, JWTVerifyOptions, JWTAlgorithm};
 pub use crate::cli::regex::{RegexMethod, RegexTestOptions, RegexMatchOptions, RegexReplaceOptions};
 pub use crate::cli::lorem::{LoremMethod, LoremOptions};
 

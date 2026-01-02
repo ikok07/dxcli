@@ -1,3 +1,4 @@
+use std::result;
 use clap::Parser;
 use colored::Colorize;
 use crate::cli::Cli;
@@ -6,6 +7,7 @@ use crate::handlers::{CommandHandler, CommandHandlerError};
 mod cli;
 mod handlers;
 mod output;
+mod utils;
 
 fn main() {
     let cli = Cli::parse();

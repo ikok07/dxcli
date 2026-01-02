@@ -53,7 +53,10 @@ pub struct TimeToUnixOptions {
 #[derive(Debug, Args)]
 pub struct TimeAgoOptions {
     #[arg(required = true, help = "Unix Timestamp")]
-    pub timestamp: i64
+    pub timestamp: i64,
+
+    #[arg(long, short, required = false, help = "Start timestamp")]
+    pub start: Option<i64>
 }
 
 #[derive(Debug, Args)]

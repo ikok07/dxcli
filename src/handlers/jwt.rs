@@ -44,3 +44,22 @@ impl JWTHandler {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::cli::JWTAlgorithm;
+    use crate::utils::TestResult;
+    use super::*;
+
+    #[test]
+    fn verify_jwt() {
+        let is_valid = JWTHandler::verify_jwt(&JWTVerifyOptions{
+            token: String::from("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30"),
+            secret: String::from("a-string-secret-at-least-256-bits-long"),
+            algorithm: JWTAlgorithm::HS256,
+            required: None,
+        }).is_ok();
+
+        assert!(is_valid, "The JWT token should be valid!");
+    }
+}

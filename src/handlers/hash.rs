@@ -50,3 +50,20 @@ impl HashHandler {
         return Err(CommandHandlerError::NegativeResult("The provided string doesn't match the expected one!".to_string()));
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::cli::{HashAlgorithm, HashVerifyOptions};
+    use crate::handlers::hash::HashHandler;
+
+    #[test]
+    fn verify_hash() {
+        let is_valid = HashHandler::verify_hash(&HashVerifyOptions{
+            text: "Hello, World".to_string(),
+            expected: "03675ac53ff9cd1535ccc7dfcdfa2c458c5218371f418dc136f2d19ac1fbe8a5".to_string(),
+            algorithm: HashAlgorithm::Sha256,
+        }).is_ok();
+
+        assert!(is_valid, "The provided text should match the expected hash!");
+    }
+}
