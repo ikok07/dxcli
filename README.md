@@ -50,20 +50,24 @@ The compiled binary will be available at `target/release/dx`.
 ```shell
 echo $SHELL
 ```
+
 2. Navigate to shell config file
 - For Zsh: ```nano ~/.zshrc```
 - For Bash (Linux): ```nano ~/.bashrc```
 - For Bash (MacOS): ```nano ~/.bash_profile```
+
 3. Add this line to the end of the file
 ```shell
 export PATH="/path/to/dx:$PATH"
 ```
 Replace `/path/to/dx` with the actual directory containing the `dx` binary.
+
 4. **Apply the changes**
 ```bash
 source ~/.zshrc    # or ~/.bashrc / ~/.bash_profile
 ```
 Or simply restart your terminal.
+
 5. **Verify installation**
 ```bash
 dx --help
